@@ -162,6 +162,7 @@ module.exports = (app) => {
     .put(app.api.teacher.forumTopic.put)
     .delete(app.api.teacher.forumTopic.remove);
 
+  app.route("/teacher/all-multimedia/:id").get(app.api.teacher.multimedia.get);
   app.route("/teacher/multimedia").post(app.api.teacher.multimedia.post);
 
   app
@@ -192,6 +193,8 @@ module.exports = (app) => {
     .delete(app.api.teacher.scrap.remove);
 
   app.route("/teacher/subject/:id").get(app.api.teacher.subject.get);
+
+  app.route("/teacher/getSubject/:id").get(app.api.teacher.subject.getById);
 
   app
     .route("/teacher/supportMaterial")
