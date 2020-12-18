@@ -8,6 +8,29 @@ module.exports = (app) => {
 
   const get = async (req, res) => {
     try {
+      existsOrError(req.params.id, "teacher does not exist!");
+      let materialsArray = [];
+
+      const subjects = await knex("subject")
+        .where("teacher_id", req.params.id)
+        .select("*");
+
+      for (let subject of subjects) {
+        const materialsQuery = await knex("supportMaterial")
+          .where("subject_id", subject.subject_id)
+          .select("*");
+
+        materialsArray = materialsArray.concat(materialsQuery);
+      }
+
+      return res.json(materialsArray);
+    } catch (msg) {
+      return res.status(400).send(msg);
+    }
+  };
+
+  const getById = async (req, res) => {
+    try {
       existsOrError(req.params.id, "supportMaterial does not exist!");
 
       const getIdsupportMaterial = await knex("supportMaterial").where({
@@ -70,5 +93,5 @@ module.exports = (app) => {
     }
   };
 
-  return { get, post, remove };
+  return { get, getById, post, remove };
 };

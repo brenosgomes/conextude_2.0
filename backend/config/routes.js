@@ -197,6 +197,9 @@ module.exports = (app) => {
   app.route("/teacher/getSubject/:id").get(app.api.teacher.subject.getById);
 
   app
+    .route("/teacher/allSupportMaterials/:id")
+    .get(app.api.teacher.supportMaterial.get);
+  app
     .route("/teacher/supportMaterial")
     .post(
       multer(multerConfig).single("file"),
