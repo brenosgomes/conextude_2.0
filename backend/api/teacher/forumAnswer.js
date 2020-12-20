@@ -7,11 +7,28 @@ module.exports = (app) => {
     try {
       existsOrError(req.params.id, "forumAnswer does not exist!");
 
-      const getIdForumAnswer = await knex("forumAnswer")
+      const forumAnswers = await knex("forumAnswer")
         .where({ forumTopic_id: req.params.id })
         .select("*");
 
-      res.json(getIdForumAnswer);
+      for (let answer of forumAnswers) {
+        if (answer.student_id) {
+          answer.person = await knex("student")
+            .where("student_id", answer.student_id)
+            .select({ student_id: "student_id", person_name: "student_name" })
+            .first();
+        } else {
+          answer.person = await knex("teacher")
+            .where("teacher_id", answer.teacher_id)
+            .select({
+              teacher_id: "teacher_id",
+              person_name: "teacher_name",
+            })
+            .first();
+        }
+      }
+
+      res.json(forumAnswers);
     } catch (msg) {
       return res.status(400).send(msg);
     }

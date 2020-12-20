@@ -7,11 +7,35 @@ module.exports = (app) => {
     try {
       existsOrError(req.params.id, "forumTopic does not exist!");
 
-      const getIdForumTopic = await knex("forumTopic")
+      const forumTopics = await knex("forumTopic")
         .where({ subject_id: req.params.id })
-        .select("*");
+        .select(
+          "forumTopic.subject_id",
+          "forumTopic.student_id",
+          "forumTopic.forumTopic_id",
+          "forumTopic.forumTopic_title",
+          "forumTopic.forumTopic_description"
+        );
 
-      res.json(getIdForumTopic);
+      for (let topic of forumTopics) {
+        if (topic.student_id) {
+          topic.person = await knex("student")
+            .where("student_id", topic.student_id)
+            .select({ student_id: "student_id", person_name: "student_name" })
+            .first();
+        } else {
+          topic.person = await knex("subject")
+            .where("subject_id", topic.subject_id)
+            .innerJoin("teacher", "teacher.teacher_id", "subject.teacher_id")
+            .select({
+              teacher_id: "teacher.teacher_id",
+              person_name: "teacher.teacher_name",
+            })
+            .first();
+        }
+      }
+
+      res.json(forumTopics);
     } catch (msg) {
       return res.status(400).send(msg);
     }
