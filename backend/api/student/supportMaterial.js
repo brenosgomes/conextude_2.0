@@ -11,14 +11,33 @@ module.exports = (app) => {
       existsOrError(req.params.id, "supportMaterial does not exist!");
 
       const getIdsupportMaterial = await knex("supportMaterial")
-        .where({ subject_id: req.params.id });
-      existsOrError(getIdsupportMaterial, "supportMaterial not found");
+        .where({ subject_id: req.params.id })
+        .select("*");
 
       res.json(getIdsupportMaterial);
     } catch (msg) {
       return res.status(400).send(msg);
     }
   };
-  
-  return { get };
+
+  const getByClass = async (req, res) => {
+    try {
+      existsOrError(req.params.id, "supportMaterial does not exist!");
+
+      const getIdsupportMaterial = await knex("supportMaterial")
+        .innerJoin(
+          "subject",
+          "subject.subject_id",
+          "supportMaterial.subject_id"
+        )
+        .where({ "subject.clas_id": req.params.id })
+        .select("*");
+
+      res.json(getIdsupportMaterial);
+    } catch (msg) {
+      return res.status(400).send(msg);
+    }
+  };
+
+  return { get, getByClass };
 };

@@ -104,12 +104,20 @@ module.exports = (app) => {
     .delete(app.api.student.forumTopic.remove);
 
   app.route("/student/multimedia/:id").get(app.api.student.multimedia.get);
+  app
+    .route("/student/all-multimedia/:id")
+    .get(app.api.student.multimedia.getByClass);
+
+  app.route("/student/student/:id").get(app.api.student.student.getById);
 
   app.route("/student/subject/:id").get(app.api.student.subject.get);
 
   app
     .route("/student/supportMaterial/:id")
     .get(app.api.student.supportMaterial.get);
+  app
+    .route("/student/all-supportMaterial/:id")
+    .get(app.api.student.supportMaterial.getByClass);
 
   //Teacher
   app.route("/teacher/attendance").post(app.api.teacher.attendance.post);
