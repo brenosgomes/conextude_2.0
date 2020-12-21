@@ -21,7 +21,7 @@ module.exports = app => {
         try {
             existsOrError(req.params.id, 'forumAnswer does not exist!')
 
-            const removeForumAnswer = await app.db('forumAnswer').del()
+            const removeForumAnswer = await knex('forumAnswer').del()
                 .where({ forumAnswer_id: req.params.id })
             existsOrError(removeForumAnswer, 'forumAnswer not found')
 

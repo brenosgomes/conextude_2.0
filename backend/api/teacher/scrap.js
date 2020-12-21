@@ -21,7 +21,7 @@ module.exports = app => {
         try {
             existsOrError(req.params.id, 'scraps does not exist!')
 
-            const rowsDeleted = await app.db('scraps').del()
+            const rowsDeleted = await knex('scraps').del()
                 .where({ scraps_id: req.params.id })
             existsOrError(rowsDeleted, 'scraps not found')
 
