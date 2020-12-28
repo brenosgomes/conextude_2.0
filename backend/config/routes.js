@@ -200,6 +200,8 @@ module.exports = (app) => {
     .put(app.api.teacher.scrap.put)
     .delete(app.api.teacher.scrap.remove);
 
+  app.route("/teacher/student").get(app.api.teacher.student.get);
+
   app.route("/teacher/subject/:id").get(app.api.teacher.subject.get);
 
   app.route("/teacher/getSubject/:id").get(app.api.teacher.subject.getById);
