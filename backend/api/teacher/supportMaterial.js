@@ -8,10 +8,34 @@ module.exports = (app) => {
 
   const get = async (req, res) => {
     try {
+      existsOrError(req.params.id, "teacher does not exist!");
+      let materialsArray = [];
+
+      const subjects = await knex("subject")
+        .where("teacher_id", req.params.id)
+        .select("*");
+
+      for (let subject of subjects) {
+        const materialsQuery = await knex("supportMaterial")
+          .where("subject_id", subject.subject_id)
+          .select("*");
+
+        materialsArray = materialsArray.concat(materialsQuery);
+      }
+
+      return res.json(materialsArray);
+    } catch (msg) {
+      return res.status(400).send(msg);
+    }
+  };
+
+  const getById = async (req, res) => {
+    try {
       existsOrError(req.params.id, "supportMaterial does not exist!");
 
-      const getIdsupportMaterial = await knex("supportMaterial")
-        .where({ subject_id: req.params.id });
+      const getIdsupportMaterial = await knex("supportMaterial").where({
+        subject_id: req.params.id,
+      });
       existsOrError(getIdsupportMaterial, "supportMaterial not found");
 
       res.json(getIdsupportMaterial);
@@ -56,8 +80,7 @@ module.exports = (app) => {
       req.body.url = `http://localhost:5000/files/${req.file.filename}`;
     try {
       const newSupportMaterial = await knex("supportMaterial").insert({
-        classroom_id: req.body.classroom_id,
-        employee_id: req.body.employee_id,
+        subject_id: req.body.subject_id,
         supportMaterial_name: req.file.originalname,
         supportMaterial_size: req.file.size,
         supportMaterial_key: req.file.filename,
@@ -70,5 +93,5 @@ module.exports = (app) => {
     }
   };
 
-  return { get, post, remove };
+  return { get, getById, post, remove };
 };
