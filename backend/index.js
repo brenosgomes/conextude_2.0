@@ -2,7 +2,6 @@ const express = require("express");
 const app = require("express")();
 const consign = require("consign");
 const db = require("./config/db");
-app.db = db;
 
 consign()
   .include("./config/middleware.js")
