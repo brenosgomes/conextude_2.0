@@ -82,6 +82,8 @@ module.exports = (app) => {
     .put(app.api.student.answer.put)
     .delete(app.api.student.answer.remove);
 
+  app.route("/student/all-exercises/:id").get(app.api.student.exercise.get);
+
   app
     .route("/student/exercise/:id")
     .get(app.api.student.exercise.getExercise)
@@ -120,6 +122,8 @@ module.exports = (app) => {
     .get(app.api.student.supportMaterial.getByClass);
 
   //Teacher
+  app.route("/teacher/alternative").post(app.api.teacher.alternative.post);
+
   app.route("/teacher/attendance").post(app.api.teacher.attendance.post);
 
   app
