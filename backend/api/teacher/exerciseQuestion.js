@@ -21,7 +21,7 @@ module.exports = app => {
         try {
             existsOrError(req.params.id, 'exerciseQuestion does not exist!')
 
-            const removeExerciseQuestion = await app.db('exerciseQuestion').del()
+            const removeExerciseQuestion = await knex('exerciseQuestion').del()
                 .where({ exerciseQuestion_id: req.params.id })
             existsOrError(removeExerciseQuestion, 'exerciseQuestion not found')
 

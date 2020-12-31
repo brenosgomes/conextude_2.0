@@ -1,4 +1,8 @@
 node_modules
 .env
+<<<<<<< HEAD
 tmp/uploads/*
 tmp/img/*
+=======
+tmp/uploads/*
+>>>>>>> 3e1ef7fa636515d9d401ad456ea568c2a82f6aaa

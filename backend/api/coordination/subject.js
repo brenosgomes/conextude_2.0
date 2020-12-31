@@ -27,8 +27,7 @@ module.exports = (app) => {
     try {
       existsOrError(req.params.id, "subject does not exist!");
 
-      const removeSubject = await app
-        .db("subject")
+      const removeSubject = await knex("subject")
         .del()
         .where({ subject_id: req.params.id });
       existsOrError(removeSubject, "subject not found");

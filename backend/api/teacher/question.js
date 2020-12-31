@@ -21,7 +21,7 @@ module.exports = app => {
         try {
             existsOrError(req.params.id, 'question does not exist!')
 
-            const rowsDeleted = await app.db('question').del()
+            const rowsDeleted = await knex('question').del()
                 .where({ question_id: req.params.id })
             existsOrError(rowsDeleted, 'question not found')
 

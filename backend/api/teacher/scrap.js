@@ -22,11 +22,10 @@ module.exports = (app) => {
     try {
       existsOrError(req.params.id, "scrap does not exist!");
 
-      const rowsDeleted = await app
-        .db("scrap")
+      const rowsDeleted = await knex("scraps")
         .del()
         .where({ scraps_id: req.params.id });
-      existsOrError(rowsDeleted, "scrap not found");
+      existsOrError(rowsDeleted, "scraps not found");
 
       res.status(204).send();
     } catch (msg) {

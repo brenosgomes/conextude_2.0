@@ -27,8 +27,7 @@ module.exports = (app) => {
     try {
       existsOrError(req.params.id, "genericSubject does not exist!");
 
-      const removeGenericSubject = await app
-        .db("genericSubject")
+      const removeGenericSubject = await knex("genericSubject")
         .del()
         .where({ genericSubject_id: req.params.id });
       existsOrError(removeGenericSubject, "genericSubject not found");

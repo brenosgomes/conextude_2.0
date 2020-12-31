@@ -8,6 +8,7 @@ exports.up = function (knex) {
       .inTable("subject")
       .onDelete("CASCADE");
     table.string("exercise_name").notNull();
+    table.date("exercice_date").notNull();
   });
 };
 

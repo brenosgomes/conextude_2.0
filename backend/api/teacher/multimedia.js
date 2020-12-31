@@ -45,8 +45,7 @@ module.exports = (app) => {
     try {
       existsOrError(req.params.id, "multimedia does not exist!");
 
-      const rowsDeleted = await app
-        .db("multimedia")
+      const rowsDeleted = await knex("multimedia")
         .del()
         .where({ multimedia_id: req.params.id });
       existsOrError(rowsDeleted, "multimedia not found");
