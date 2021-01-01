@@ -8,10 +8,10 @@ exports.up = function (knex) {
       .inTable("subject")
       .onDelete("CASCADE");
     table.string("exercise_name").notNull();
-    table.date("exercice_date").notNull();
+    table.date("exercise_date").notNull();
   });
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTable("exercice");
+  return knex.schema.dropTable("exercise");
 };

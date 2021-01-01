@@ -24,7 +24,7 @@ module.exports = (app) => {
             "exercise_id",
             "exercise_name",
             "genericSubject_name",
-            "subject_year"
+            "exercise_date"
           );
 
         return res.json(exercises);
@@ -55,7 +55,8 @@ module.exports = (app) => {
         .where("exerciseQuestion.exercise_id", req.params.id)
         .select(
           "question.question_id AS id",
-          "question.question_question AS question"
+          "question.question_question AS question",
+          "question.question_url AS url"
         );
 
       for (let question of questions) {

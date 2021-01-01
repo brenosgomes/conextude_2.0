@@ -17,5 +17,5 @@ exports.up = function (knex) {
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTable("exerciceQuestion");
+  return knex.schema.dropTable("exerciseQuestion");
 };

@@ -11,6 +11,7 @@ consign()
   .into(app);
 
 app.use("/files", express.static("tmp/uploads"));
+app.use("/files", express.static("tmp/img"));
 
 app.listen(5000, () => {
   console.log("Backend executando :)");

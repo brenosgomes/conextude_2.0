@@ -5,12 +5,14 @@ module.exports = (app) => {
 
   const get = async (req, res) => {
     try {
-      existsOrError(req.params.id, "exercise does not exist!");
+      existsOrError(req.params.id, "teacher does not exist!");
 
       const getIdExercise = await knex("exercise")
-        .where({ subject_id: req.params.id })
-        .first();
-      existsOrError(getIdExercise, "exercise not found");
+        .innerJoin("subject", "subject.subject_id", "exercise.subject_id")
+        .innerJoin("clas", "clas.clas_id", "subject.clas_id")
+        .innerJoin("series", "series.series_id", "clas.series_id")
+        .where("subject.teacher_id", req.params.id)
+        .select("*");
 
       res.json(getIdExercise);
     } catch (msg) {
