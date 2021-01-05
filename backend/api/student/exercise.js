@@ -37,6 +37,31 @@ module.exports = (app) => {
     }
   };
 
+  const getBySubject = async (req, res) => {
+    try {
+      existsOrError(req.params.id, "subject does not exist!");
+
+      const exercises = await knex("exercise")
+        .innerJoin("subject", "subject.subject_id", "exercise.subject_id")
+        .innerJoin(
+          "genericSubject",
+          "genericSubject.genericSubject_id",
+          "subject.genericSubject_id"
+        )
+        .where("subject.subject_id", req.params.id)
+        .select(
+          "exercise_id",
+          "exercise_name",
+          "genericSubject_name",
+          "exercise_date"
+        );
+
+      return res.json(exercises);
+    } catch (error) {
+      return res.status(400).json("exercises not found");
+    }
+  };
+
   const getExercise = async (req, res) => {
     try {
       existsOrError(req.params.id, "exercise does not exist!");
@@ -87,5 +112,5 @@ module.exports = (app) => {
     }
   };
 
-  return { get, getExercise, getQuestion };
+  return { get, getBySubject, getExercise, getQuestion };
 };

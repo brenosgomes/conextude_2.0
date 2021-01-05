@@ -82,6 +82,9 @@ module.exports = (app) => {
     .put(app.api.student.answer.put)
     .delete(app.api.student.answer.remove);
 
+  app
+    .route("/student/exercises/:id")
+    .get(app.api.student.exercise.getBySubject);
   app.route("/student/all-exercises/:id").get(app.api.student.exercise.get);
 
   app
