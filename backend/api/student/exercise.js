@@ -12,6 +12,8 @@ module.exports = (app) => {
         .first();
 
       if (student) {
+        const filteredExercises = [];
+
         const exercises = await knex("exercise")
           .innerJoin("subject", "subject.subject_id", "exercise.subject_id")
           .innerJoin(
@@ -27,7 +29,20 @@ module.exports = (app) => {
             "exercise_date"
           );
 
-        return res.json(exercises);
+        await Promise.all(
+          exercises.map(async (exercise, index) => {
+            const hasResponse = await knex("answer")
+              .where("exercise_id", exercise.exercise_id)
+              .where("student_id", student.student_id)
+              .first();
+
+            if (!hasResponse) {
+              filteredExercises.push(exercise);
+            }
+          })
+        );
+
+        return res.json(filteredExercises);
       }
 
       return res.status(400).send("student not found");

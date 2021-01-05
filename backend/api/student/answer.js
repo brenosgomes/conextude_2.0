@@ -38,6 +38,15 @@ module.exports = (app) => {
       const { answers, exercise_id, student_id } = req.body;
       const newAnswers = [];
 
+      const alreadyHasAnswers = await knex("answer")
+        .where("exercise_id", exercise_id)
+        .where("student_id", student_id)
+        .first();
+
+      if (alreadyHasAnswers) {
+        return res.status(403).json({ message: "You can't do that again." });
+      }
+
       for (let answer of answers) {
         const newAnswer = await knex("answer").insert(answer);
 
