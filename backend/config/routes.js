@@ -143,6 +143,8 @@ module.exports = (app) => {
     .put(app.api.teacher.bulletin.put)
     .delete(app.api.teacher.bulletin.remove);
 
+  app.route("/teacher/bulletinSeries/:query").get(app.api.teacher.bulletinSeries.getBySeries)
+
   app.route("/teacher/exercise").post(app.api.teacher.exercise.post);
 
   app
